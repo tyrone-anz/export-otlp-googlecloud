@@ -55,7 +55,8 @@ func main() {
 	time.Sleep(time.Second * 5) // wait for metrics to be collected
 }
 
-// Collector config
+// Collector config (v0.31.0)
+// https://github.com/open-telemetry/opentelemetry-collector-contrib
 //
 // receivers:
 //  otlp:
@@ -63,7 +64,6 @@ func main() {
 //      grpc:
 //        endpoint: 0.0.0.0:55680
 //  googlecloud:
-//    # Options are defined here: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/master/exporter/stackdriverexporter
 //    project: <removed>
 //    timeout: 10s
 //    metric:

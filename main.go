@@ -33,7 +33,8 @@ func main() {
 	}
 
 	// cont := controller.New(processor.New(selector.NewWithInexpensiveDistribution(), exporter),
-	cont := controller.New(processor.New(selector.NewWithExactDistribution(), exporter),
+	// cont := controller.New(processor.New(selector.NewWithExactDistribution(), exporter),
+	cont := controller.New(processor.New(selector.NewWithHistogramDistribution(), exporter),
 		controller.WithExporter(exporter),
 		controller.WithCollectPeriod(time.Second*2))
 
@@ -85,7 +86,7 @@ func main() {
 //      processors: [memory_limiter, batch]
 //      exporters: [googlecloud, logging]
 
-// When using inexpensive distribution as aggregator selector
+// When using inexpensive distribution as aggregator selector ================================================================
 //
 // Logs from collector:
 //
@@ -232,7 +233,7 @@ func main() {
 // ]
 // }
 
-// When using exact distribution as aggregator selector
+// When using exact distribution as aggregator selector ================================================================
 //
 // Logs from collector:
 //
@@ -347,6 +348,233 @@ func main() {
 //           }
 //          }
 //         ]
+//        }
+//       }
+//      }
+//     ]
+//    }
+//   ]
+//  }
+// ]
+// }
+
+// When using histogram distribution as aggregator selector ================================================================
+//
+// Logs from collector:
+//
+// 2021-08-26T13:45:35.744+1000    DEBUG   loggingexporter/logging_exporter.go:66  ResourceMetrics #0
+// Resource labels:
+//     -> service.name: STRING(unknown_service:___go_build_main_go)
+//     -> telemetry.sdk.language: STRING(go)
+//     -> telemetry.sdk.name: STRING(opentelemetry)
+//     -> telemetry.sdk.version: STRING(1.0.0-RC1)
+// InstrumentationLibraryMetrics #0
+// InstrumentationLibrary
+// Metric #0
+// Descriptor:
+//     -> Name: test.dummy.one
+//     -> Description:
+//     -> Unit:
+//     -> DataType: Histogram
+//     -> AggregationTemporality: AGGREGATION_TEMPORALITY_DELTA
+// HistogramDataPoints #0
+// StartTimestamp: 2021-08-26 03:45:33.621217 +0000 UTC
+// Timestamp: 2021-08-26 03:45:35.621554 +0000 UTC
+// Count: 1
+// Sum: 100.000000
+// ExplicitBounds #0: 5000.000000
+// ExplicitBounds #1: 10000.000000
+// ExplicitBounds #2: 25000.000000
+// ExplicitBounds #3: 50000.000000
+// ExplicitBounds #4: 100000.000000
+// ExplicitBounds #5: 250000.000000
+// ExplicitBounds #6: 500000.000000
+// ExplicitBounds #7: 1000000.000000
+// ExplicitBounds #8: 2500000.000000
+// ExplicitBounds #9: 5000000.000000
+// ExplicitBounds #10: 10000000.000000
+// Buckets #0, Count: 1
+// Buckets #1, Count: 0
+// Buckets #2, Count: 0
+// Buckets #3, Count: 0
+// Buckets #4, Count: 0
+// Buckets #5, Count: 0
+// Buckets #6, Count: 0
+// Buckets #7, Count: 0
+// Buckets #8, Count: 0
+// Buckets #9, Count: 0
+// Buckets #10, Count: 0
+// Buckets #11, Count: 0
+// HistogramDataPoints #1
+// StartTimestamp: 2021-08-26 03:45:33.621217 +0000 UTC
+// Timestamp: 2021-08-26 03:45:35.621554 +0000 UTC
+// Count: 1
+// Sum: 20.000000
+// ExplicitBounds #0: 5000.000000
+// ExplicitBounds #1: 10000.000000
+// ExplicitBounds #2: 25000.000000
+// ExplicitBounds #3: 50000.000000
+// ExplicitBounds #4: 100000.000000
+// ExplicitBounds #5: 250000.000000
+// ExplicitBounds #6: 500000.000000
+// ExplicitBounds #7: 1000000.000000
+// ExplicitBounds #8: 2500000.000000
+// ExplicitBounds #9: 5000000.000000
+// ExplicitBounds #10: 10000000.000000
+// Buckets #0, Count: 1
+// Buckets #1, Count: 0
+// Buckets #2, Count: 0
+// Buckets #3, Count: 0
+// Buckets #4, Count: 0
+// Buckets #5, Count: 0
+// Buckets #6, Count: 0
+// Buckets #7, Count: 0
+// Buckets #8, Count: 0
+// Buckets #9, Count: 0
+// Buckets #10, Count: 0
+// Buckets #11, Count: 0
+//
+// 2021-08-26T13:45:39.887+1000    info    exporterhelper/queued_retry.go:325      Exporting failed. Will retry the request after interval.
+//   {"kind": "exporter", "name": "googlecloud", "error": "rpc error: code = Internal desc = One or more TimeSeries could not be written: Field timeSeries[1] had an invalid value: Duplicate TimeSeries encountered. Only one point can be written per TimeSeries per request.: timeSeries[1]; Internal error encountered. Please retry after a few seconds. If internal errors persist, contact support at https://cloud.google.com/support/docs.: timeSeries[0]", "interval": "3.770024677s"}
+//
+//
+// Logged JSON of the proto sent to collector:
+//
+// {
+// "resource_metrics": [
+//  {
+//   "resource": {
+//    "attributes": [
+//     {
+//      "key": "service.name",
+//      "value": {
+//       "Value": {
+//        "StringValue": "unknown_service:___go_build_main_go"
+//       }
+//      }
+//     },
+//     {
+//      "key": "telemetry.sdk.language",
+//      "value": {
+//       "Value": {
+//        "StringValue": "go"
+//       }
+//      }
+//     },
+//     {
+//      "key": "telemetry.sdk.name",
+//      "value": {
+//       "Value": {
+//        "StringValue": "opentelemetry"
+//       }
+//      }
+//     },
+//     {
+//      "key": "telemetry.sdk.version",
+//      "value": {
+//       "Value": {
+//        "StringValue": "1.0.0-RC1"
+//       }
+//      }
+//     }
+//    ]
+//   },
+//   "instrumentation_library_metrics": [
+//    {
+//     "metrics": [
+//      {
+//       "name": "test.dummy.two",
+//       "Data": {
+//        "Histogram": {
+//         "data_points": [
+//          {
+//           "attributes": [
+//            {
+//             "key": "rpc.method",
+//             "value": {
+//              "Value": {
+//               "StringValue": "Hello"
+//              }
+//             }
+//            }
+//           ],
+//           "start_time_unix_nano": 1629949533621217000,
+//           "time_unix_nano": 1629949535621554000,
+//           "count": 1,
+//           "sum": 100,
+//           "bucket_counts": [
+//            1,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0
+//           ],
+//           "explicit_bounds": [
+//            5000,
+//            10000,
+//            25000,
+//            50000,
+//            100000,
+//            250000,
+//            500000,
+//            1000000,
+//            2500000,
+//            5000000,
+//            10000000
+//           ]
+//          },
+//          {
+//           "attributes": [
+//            {
+//             "key": "rpc.method",
+//             "value": {
+//              "Value": {
+//               "StringValue": "Hi"
+//              }
+//             }
+//            }
+//           ],
+//           "start_time_unix_nano": 1629949533621217000,
+//           "time_unix_nano": 1629949535621554000,
+//           "count": 1,
+//           "sum": 20,
+//           "bucket_counts": [
+//            1,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0,
+//            0
+//           ],
+//           "explicit_bounds": [
+//            5000,
+//            10000,
+//            25000,
+//            50000,
+//            100000,
+//            250000,
+//            500000,
+//            1000000,
+//            2500000,
+//            5000000,
+//            10000000
+//           ]
+//          }
+//         ],
+//         "aggregation_temporality": 1
 //        }
 //       }
 //      }

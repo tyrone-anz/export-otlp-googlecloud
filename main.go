@@ -17,6 +17,9 @@ import (
 	selector "go.opentelemetry.io/otel/sdk/metric/selector/simple"
 )
 
+// This file tests the exporting of metrics (value recorder kind) to collector then collector to google cloud.
+// There are two recorded data for the metric with different attribute value.
+// Regardless of the selector aggregator used, google cloud exporter on the collector throws the `Duplicate Timeseries` error.
 func main() {
 	ctx := context.Background()
 	host := "localhost:55680"
@@ -86,7 +89,7 @@ func main() {
 //      processors: [memory_limiter, batch]
 //      exporters: [googlecloud, logging]
 
-// When using inexpensive distribution as aggregator selector ================================================================
+// Case #1: When using inexpensive distribution as aggregator selector ================================================================
 //
 // Logs from collector:
 //
@@ -233,7 +236,7 @@ func main() {
 // ]
 // }
 
-// When using exact distribution as aggregator selector ================================================================
+// Case #2: When using exact distribution as aggregator selector ================================================================
 //
 // Logs from collector:
 //
@@ -358,7 +361,7 @@ func main() {
 // ]
 // }
 
-// When using histogram distribution as aggregator selector ================================================================
+// Case #3: When using histogram distribution as aggregator selector ================================================================
 //
 // Logs from collector:
 //

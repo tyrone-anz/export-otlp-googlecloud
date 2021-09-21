@@ -36,8 +36,8 @@ func main() {
 	}
 
 	// cont := controller.New(processor.New(selector.NewWithInexpensiveDistribution(), exporter),
-	// cont := controller.New(processor.New(selector.NewWithExactDistribution(), exporter),
-	cont := controller.New(processor.New(selector.NewWithHistogramDistribution(), exporter),
+	cont := controller.New(processor.New(selector.NewWithExactDistribution(), exporter),
+		// cont := controller.New(processor.New(selector.NewWithHistogramDistribution(), exporter),
 		controller.WithExporter(exporter),
 		controller.WithCollectPeriod(time.Second*2))
 

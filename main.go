@@ -54,6 +54,9 @@ func main() {
 
 	valuerecorder.Record(ctx, 100, attribute.Any("rpc.method", "Hello"))
 	valuerecorder.Record(ctx, 20, attribute.Any("rpc.method", "Hi"))
+	valuerecorder.Record(ctx, 20, attribute.Any("rpc.method", "Hi"))
+	valuerecorder.Record(ctx, 25, attribute.Any("rpc.method", "Hi"))
+	valuerecorder.Record(ctx, 25, attribute.Any("rpc.method", "Hi"))
 
 	time.Sleep(time.Second * 5) // wait for metrics to be collected
 }
